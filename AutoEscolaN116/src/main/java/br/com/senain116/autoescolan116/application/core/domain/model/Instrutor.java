@@ -1,61 +1,90 @@
 package br.com.senain116.autoescolan116.application.core.domain.model;
 
-import br.com.senain116.autoescolan116.adapter.in.controller.request.instrutor.DadosAtualizacaoInstrutor;
-import br.com.senain116.autoescolan116.adapter.in.controller.request.instrutor.DadosCadastroInstrutor;
 import br.com.senain116.autoescolan116.application.core.domain.vo.Endereco;
 import br.com.senain116.autoescolan116.application.core.domain.enums.Especialidade;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@Entity(name = "Instrutor")
-@Table(name = "instrutores")
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(of = "id")
 public class Instrutor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
     private String telefone;
     private String cnh;
 
-    @Enumerated(EnumType.STRING)
+    public Instrutor() {
+    }
+
+    public Instrutor(Long id, String nome, String email, String telefone, String cnh, Especialidade especialidade, Endereco endereco, boolean ativo) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.telefone = telefone;
+        this.cnh = cnh;
+        this.especialidade = especialidade;
+        this.endereco = endereco;
+        this.ativo = ativo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getCnh() {
+        return cnh;
+    }
+
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
     private Especialidade especialidade;
 
-    @Embedded
     private Endereco endereco;
     private boolean ativo = true;
 
-    public Instrutor(DadosCadastroInstrutor dados) {
-        this.nome = dados.nome();
-        this.email = dados.email();
-        this.telefone = dados.telefone();
-        this.cnh = dados.cnh();
-        this.especialidade = dados.especialidade();
-        this.endereco = new Endereco(dados.endereco());
-    }
-
-    public void atualizarInformacoes(DadosAtualizacaoInstrutor dados) {
-        if (dados.nome() != null && !dados.nome().isBlank()) {
-            this.nome = dados.nome();
+    public void atualizarInformacoes() {
+        if (nome != null && !nome.isBlank()) {
+            this.nome = nome;
         }
-        if (dados.email() != null && !dados.email().isBlank()) {
-            this.email = dados.email();
+        if (email != null && !email.isBlank()) {
+            this.email = email;
         }
-        if (dados.telefone() != null && !dados.telefone().isBlank()) {
-            this.telefone = dados.telefone();
+        if (telefone != null && !telefone.isBlank()) {
+            this.telefone = telefone;
         }
-        if (dados.especialidade() != null) {
-            this.especialidade = dados.especialidade();
+        if (especialidade != null) {
+            this.especialidade = especialidade;
         }
-        if (dados.endereco() != null) {
-            this.endereco.atualizarInformacoes(dados.endereco());
+        if (endereco != null) {
+            this.endereco.atualizarInformacoes(
+                    endereco.getLogradouro(),
+                    endereco.getNumero(),
+                    endereco.getComplemento(),
+                    endereco.getBairro(),
+                    endereco.getCidade(),
+                    endereco.getUf(),
+                    endereco.getCep()
+                    );
         }
     }
 

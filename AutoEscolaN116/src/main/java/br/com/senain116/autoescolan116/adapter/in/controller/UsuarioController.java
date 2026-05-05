@@ -7,11 +7,11 @@ import br.com.senain116.autoescolan116.adapter.in.controller.response.usuario.Da
 import br.com.senain116.autoescolan116.adapter.in.controller.response.usuario.DadosListagemUsuario;
 import br.com.senain116.autoescolan116.adapter.in.controller.response.usuario.DadosSucesso;
 import br.com.senain116.autoescolan116.application.core.domain.model.Usuario;
+import br.com.senain116.autoescolan116.application.core.usecase.UsuarioService;
+import br.com.senain116.autoescolan116.application.port.in.ModelDomainController;
 import br.com.senain116.autoescolan116.application.port.out.UsuarioRepository;
 import br.com.senain116.autoescolan116.exception.type.usuario.SenhaIncorretaException;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,71 +25,61 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController {
-    @Autowired
+public class UsuarioController implements ModelDomainController<
+        DadosCadastroUsuario,
+        DadosListagemUsuario,
+        DadosAtualizacaoUsuario,
+        Void,
+        DadosDetalhamentoUsuario,
+        Long> {
     private UsuarioRepository repository;
-
-    @Autowired
     private PasswordEncoder encoder;
+    private UsuarioService service;
+
+    public UsuarioController(UsuarioRepository repository, PasswordEncoder encoder, UsuarioService service) {
+        this.repository = repository;
+        this.encoder = encoder;
+        this.service = service;
+    }
 
     @PostMapping
-    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DadosDetalhamentoUsuario> cadastrarUsuario(
+    public ResponseEntity<DadosDetalhamentoUsuario> cadastrar(
             @RequestBody @Valid DadosCadastroUsuario dados,
             UriComponentsBuilder uriBuilder) {
         String senhaCriptografada = encoder.encode(dados.senha());
-        Usuario usuario = new Usuario(
-                null,
-                dados.login(),
-                senhaCriptografada,
-                true,
-                dados.perfil()
-        );
-        repository.save(usuario);
+        DadosDetalhamentoUsuario dto = service.cadastrar(dados);
         URI uri = uriBuilder
                 .path("/usuarios/{id}")
-                .buildAndExpand(usuario.getId())
+                .buildAndExpand(dto.id())
                 .toUri();
-        DadosDetalhamentoUsuario dto = new DadosDetalhamentoUsuario(usuario);
         return ResponseEntity.created(uri).body(dto);
     }
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<DadosListagemUsuario>> listarUsuarios(
+    public ResponseEntity<Page<DadosListagemUsuario>> listar(
             @PageableDefault(size = 10, sort = "nome") Pageable paginacao) {
-        Page page = repository
-                .findAllByAtivoTrue(paginacao)
-                .map(DadosListagemUsuario::new);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(service.listar(paginacao));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DadosDetalhamentoUsuario> detalharUsuario(
+    public ResponseEntity<DadosDetalhamentoUsuario> detalhar(
             @PathVariable Long id) {
-        Usuario usuario = repository.getReferenceById(id);
-        DadosDetalhamentoUsuario dto = new DadosDetalhamentoUsuario(usuario);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(service.detalhar(id));
     }
 
     @PutMapping
-    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DadosDetalhamentoUsuario> atualizarUsuario(
+    public ResponseEntity<DadosDetalhamentoUsuario> atualizar(
             @RequestBody @Valid DadosAtualizacaoUsuario dados) {
-        Usuario usuario = repository.getReferenceById(dados.id());
-        usuario.atualizarInformacoes(dados);
-        repository.save(usuario);
-        DadosDetalhamentoUsuario dto = new DadosDetalhamentoUsuario(usuario);
-        return ResponseEntity.ok(dto);
+        return ResponseEntity.ok(service.atualizarUsuario(dados));
     }
 
     @PatchMapping
-    @Transactional
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<DadosSucesso> atualizarSenha(@RequestBody @Valid DadosAtualizacaoSenha dados) {
+    public ResponseEntity<DadosSucesso> atualizar(@RequestBody @Valid DadosAtualizacaoSenha dados) {
         Usuario usuario = repository.getReferenceById(dados.id());
         if (!encoder.matches(dados.senhaAntiga(), usuario.getSenha())) {
             throw new SenhaIncorretaException("Senha incorreta!");
@@ -100,13 +90,11 @@ public class UsuarioController {
         return ResponseEntity.ok(new DadosSucesso("Senha atualizada com sucesso!"));
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> excluirUsuario(@PathVariable Long id) {
-        Usuario usuario = repository.getReferenceById(id);
-        usuario.excluir();
-        repository.save(usuario);
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        service.excluir(id);
         return ResponseEntity.noContent().build();
     }
 }

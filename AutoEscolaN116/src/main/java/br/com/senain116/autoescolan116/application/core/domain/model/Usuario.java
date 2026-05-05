@@ -1,12 +1,7 @@
 package br.com.senain116.autoescolan116.application.core.domain.model;
 
-import br.com.senain116.autoescolan116.adapter.in.controller.request.usuario.DadosAtualizacaoUsuario;
 import br.com.senain116.autoescolan116.application.core.domain.enums.Perfil;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,21 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity(name = "Usuario")
-@Table(name = "usuarios")
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String senha;
     private boolean ativo = true;
 
-    @Enumerated(EnumType.STRING)
     private Perfil perfil;
 
     @Override
@@ -67,23 +53,45 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    public void atualizarInformacoes(DadosAtualizacaoUsuario dados) {
-        if (dados.login() != null && !dados.login().isBlank()) {
-            this.login = dados.login();
-        }
-        if (dados.ativo()) {
-            this.ativo = true;
-        }
-        if (dados.perfil() != null) {
-            this.perfil = dados.perfil();
-        }
+    public Usuario() {
     }
 
-    public void excluir() {
-        this.ativo = false;
+    public Usuario(Long id, String login, String senha, boolean ativo, Perfil perfil) {
+        this.id = id;
+        this.login = login;
+        this.senha = senha;
+        this.ativo = ativo;
+        this.perfil = perfil;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
     }
 
     public void atualizarSenha(String senhaNovaCriptografada) {
         this.senha = senhaNovaCriptografada;
+    }
+
+    public void atualizarUsuario(Long id ,String login, boolean ativo, Perfil perfil){
+        this.id = id;
+        this.login = login;
+        this.ativo = ativo;
+        this.perfil =perfil;
     }
 }

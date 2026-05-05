@@ -37,7 +37,7 @@ public class InstrutorMapper {
     }
 
     public DadosDetalhamentoInstrutor toDetailsDTO(Instrutor instrutor){
-        return new DadosListagemInstrutor(
+        return new DadosDetalhamentoInstrutor(
                 instrutor.getId(),
                 instrutor.getNome(),
                 instrutor.getEmail(),

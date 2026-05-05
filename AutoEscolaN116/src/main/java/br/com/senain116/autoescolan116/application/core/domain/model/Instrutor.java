@@ -3,6 +3,8 @@ package br.com.senain116.autoescolan116.application.core.domain.model;
 import br.com.senain116.autoescolan116.application.core.domain.vo.Endereco;
 import br.com.senain116.autoescolan116.application.core.domain.enums.Especialidade;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 public class Instrutor {
     private Long id;
@@ -91,4 +93,5 @@ public class Instrutor {
     public void excluir() {
         this.ativo = false;
     }
+
 }

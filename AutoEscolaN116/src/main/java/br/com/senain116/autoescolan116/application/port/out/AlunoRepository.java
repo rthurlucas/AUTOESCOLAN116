@@ -1,6 +1,7 @@
 package br.com.senain116.autoescolan116.application.port.out;
 
 import br.com.senain116.autoescolan116.application.core.domain.model.Aluno;
+import br.com.senain116.autoescolan116.application.core.domain.model.Instrutor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

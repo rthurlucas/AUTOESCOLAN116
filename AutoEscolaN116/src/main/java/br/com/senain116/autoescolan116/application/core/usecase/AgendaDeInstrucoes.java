@@ -37,7 +37,7 @@ public class AgendaDeInstrucoes {
 
     @Transactional
     public DadosDetalhamentoAgendamento agendar(DadosAgendamento dados) {
-        if (!alunoRepository.existsById(dados.idAluno())) {
+        if (!alunoRepository.existsByIdAndAtivoTrue(dados.idAluno())) {
             throw new AlunoNotFoundException("ID do aluno informado não existe!");
         }
         if (dados.idInstrutor() != null && !instrutorRepository.existsById(dados.idInstrutor())) {
@@ -47,7 +47,7 @@ public class AgendaDeInstrucoes {
         //Validações
         validadoresAgendamento.forEach(v -> v.validar(dados));
 
-        Aluno aluno = alunoRepository.getReferenceById(dados.idAluno());
+        Aluno aluno = alunoRepository.findById(dados.idAluno()).orElseThrow(() -> new AlunoNotFoundException("ID do aluno informado não existe!"));
         Instrutor instrutor = escolherInstrutor(dados);
         Instrucao instrucao = new Instrucao(
                 null,

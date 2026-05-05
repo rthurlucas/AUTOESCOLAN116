@@ -44,7 +44,7 @@ public class InstrutorService {
    }
 
    @Transactional
-    public  atualizar(DadosAtualizacaoInstrutor dados){
+    public DadosDetalhamentoInstrutor atualizar(DadosAtualizacaoInstrutor dados){
         Instrutor instrutor = repository.findById(dados.id())
                 .orElseThrow(() -> new InstrutorNotFoundException("ID do instrutor nao encontrado: " + dados.id()));
         instrutor.atualizarInformacoes(
@@ -56,5 +56,13 @@ public class InstrutorService {
         );
         Instrutor saved = repository.save(instrutor);
         return mapper.toDetailsDTO(saved);
+   }
+
+   public void excluir(Long id){
+        Instrutor instrutor = repository.findById(id)
+                .orElseThrow(() -> new InstrutorNotFoundException("ID do instrutor nao encontrado: " + id));
+        instrutor.excluir();
+        Instrutor saved = repository.save(instrutor);
+        repository.save(saved);
    }
 }

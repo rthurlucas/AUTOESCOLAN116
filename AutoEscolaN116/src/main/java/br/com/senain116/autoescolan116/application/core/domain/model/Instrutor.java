@@ -64,7 +64,13 @@ public class Instrutor {
     private Endereco endereco;
     private boolean ativo = true;
 
-    public void atualizarInformacoes() {
+    public void atualizarInformacoes(
+            String nome,
+            String email,
+            String telefone,
+            Especialidade especialidade,
+            Endereco endereco
+    ) {
         if (nome != null && !nome.isBlank()) {
             this.nome = nome;
         }

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 public record DadosDetalhamentoAgendamento(
         Long id,
-        String aluno,
-        String instrutor,
+        Long aluno,
+        Long instrutor,
         Especialidade especialidade,
 
         @JsonFormat(pattern = "dd/MM/yyyy - HH:mm")

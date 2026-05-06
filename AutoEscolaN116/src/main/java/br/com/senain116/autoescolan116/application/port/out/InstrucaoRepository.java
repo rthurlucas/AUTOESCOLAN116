@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 
-public interface InstrucaoRepository extends JpaRepository<Instrucao, Long> {
+public interface InstrucaoRepository{
     boolean existsByAlunoIdAndDataBetween(Long id, LocalDateTime inicio, LocalDateTime fim);
 
     boolean existsByInstrutorIdAndData(Long id, LocalDateTime data);
+
+    Instrucao save(Instrucao instrucao);
 }

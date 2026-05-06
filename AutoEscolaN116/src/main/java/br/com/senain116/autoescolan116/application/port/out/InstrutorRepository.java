@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 
-public interface InstrutorRepository extends JpaRepository<Instrutor, Long> {
+public interface InstrutorRepository{
     Page<Instrutor> findAllByAtivoTrue(Pageable paginacao);
 
     @Query("""

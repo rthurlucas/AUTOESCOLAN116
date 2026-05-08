@@ -4,8 +4,8 @@ import br.com.senain116.autoescolan116.adapter.in.controller.response.instrucao.
 import br.com.senain116.autoescolan116.application.core.usecase.AgendaDeInstrucoes;
 import br.com.senain116.autoescolan116.adapter.in.controller.request.instrucao.DadosAgendamento;
 import br.com.senain116.autoescolan116.adapter.in.controller.response.instrucao.DadosDetalhamentoAgendamento;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,14 +24,29 @@ public class InstrucaoController {
     }
 
     @PostMapping
-    public ResponseEntity<DadosDetalhamentoAgendamento> agendarInstrucao(
+    public ResponseEntity<DadosDetalhamentoAgendamento> cadastrarInstrucao(
             @RequestBody @Valid DadosAgendamento dados) {
         return ResponseEntity.ok(agenda.agendar(dados));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public Page<DadosListagemInstrucao> listagemInstrucao(@PageableDefault(size = 10, sort = "name")Pageable paginacao){
+    public Page<DadosListagemInstrucao> listarInstrucao(@PageableDefault(size = 10, sort = "name")Pageable paginacao){
         return ResponseEntity.ok(agenda.listar(paginacao)).getBody();
     }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosDetalhamentoAgendamento> detalhar(Long id) {
+        return ResponseEntity.ok(agenda.detalhar(id));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN', 'USER')")
+    @Transactional
+   public ResponseEntity<Void> excluirInstrucao(@PathVariable Long id){
+       agenda.excluirAgendamento(id);
+       return ResponseEntity.noContent().build();
+   }
 }

@@ -3,7 +3,6 @@ package br.com.senain116.autoescolan116.application.core.usecase;
 import br.com.senain116.autoescolan116.adapter.in.controller.mapper.InstrucaoMapper;
 import br.com.senain116.autoescolan116.adapter.in.controller.request.instrucao.DadosAgendamento;
 import br.com.senain116.autoescolan116.adapter.in.controller.response.instrucao.DadosDetalhamentoAgendamento;
-import br.com.senain116.autoescolan116.adapter.in.controller.response.instrucao.DadosListagemInstrucao;
 import br.com.senain116.autoescolan116.application.core.domain.model.Aluno;
 import br.com.senain116.autoescolan116.application.core.domain.model.Instrucao;
 import br.com.senain116.autoescolan116.exception.type.aluno.AlunoNotFoundException;
@@ -51,6 +50,7 @@ public class AgendaDeInstrucoes {
             throw new InstrutorNotFoundException("ID do instrutor informado não existe!");
         }
 
+
         //Validações
         validadoresAgendamento.forEach(v -> v.validar(dados));
 
@@ -64,6 +64,12 @@ public class AgendaDeInstrucoes {
         );
         Instrucao saved = repository.save(instrucao);
         return new DadosDetalhamentoAgendamento(saved);
+    }
+
+    public void excluirAgendamento(Long id){
+        Instrucao agenda = repository.findById(id)
+                .orElseThrow(() -> new DadosIncompletosException("ID do agendamento não encontrado: " + id));
+        repository.delete(agenda);
     }
 
     private Instrutor escolherInstrutor(DadosAgendamento dados) {

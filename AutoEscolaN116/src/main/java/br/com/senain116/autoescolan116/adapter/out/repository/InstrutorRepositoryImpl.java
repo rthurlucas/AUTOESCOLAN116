@@ -10,13 +10,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
-public class InstrutorControllerImpl implements InstrutorRepository {
+public class InstrutorRepositoryImpl implements InstrutorRepository {
     private final InstrutorJpaRepository jpaRepository;
     private final InstrutorEntityMapper entityMapper;
 
-    public InstrutorControllerImpl(InstrutorJpaRepository jpaRepository, InstrutorEntityMapper entityMapper) {
+    public InstrutorRepositoryImpl(InstrutorJpaRepository jpaRepository, InstrutorEntityMapper entityMapper) {
         this.jpaRepository = jpaRepository;
         this.entityMapper = entityMapper;
     }
@@ -24,7 +25,10 @@ public class InstrutorControllerImpl implements InstrutorRepository {
     @Override
     public Page<Instrutor> findAllByAtivoTrue(Pageable paginacao) {
         return jpaRepository
+
                 .findAllByAtivoTrue(paginacao)
+                .stream()
+                .filter(instrutor -> instrutor.isAtivo())
                 .map(entityMapper::toDomain);
     }
 
@@ -36,5 +40,25 @@ public class InstrutorControllerImpl implements InstrutorRepository {
     @Override
     public boolean isActiveById(Long id) {
         return false;
+    }
+
+    @Override
+    public Instrutor save(Instrutor instrutor) {
+        return null;
+    }
+
+    @Override
+    public Optional<Instrutor> findById(Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsByIdAndAtivoTrue(Long aLong) {
+        return false;
+    }
+
+    @Override
+    public Instrutor getReferenceById(Long aLong) {
+        return null;
     }
 }

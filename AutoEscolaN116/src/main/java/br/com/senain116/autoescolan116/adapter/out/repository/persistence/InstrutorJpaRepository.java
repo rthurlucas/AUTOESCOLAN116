@@ -12,30 +12,32 @@ import java.time.LocalDateTime;
 
 public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, Long> {
 
-    Page<Instrutor> findAllByAtivoTrue(Pageable paginacao);
+    Page<InstrutorEntity> findAllByAtivoTrue(Pageable paginacao);
 
     @Query("""
-                select i from Instrutor i
+                select i from InstrutorEntity i
                 where
                 i.ativo = true
                 and
                 i.especialidade = :especialidade
                 and
                 i.id not in(
-                    select a.instrutor from Instrucao a
+                    select a.instrutorEntity from Instrucao a
                     where
                     a.data = :data
                     )
                 order by rand()
                 limit 1
             """)
-    Instrutor escolherInstrutorAleatorioDisponivel(Especialidade especialidade, LocalDateTime data);
+    InstrutorEntity escolherInstrutorAleatorioDisponivel(Especialidade especialidade, LocalDateTime data);
 
     @Query("""
                 select i.ativo
-                from Instrutor i
+                from InstrutorEntity i
                 where
                 i.id = :id
             """)
     boolean isActiveById(Long id);
+
+    boolean existsByIdAndTrue(Long id);
 }

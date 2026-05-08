@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, Long> {
 
-
     Page<Instrutor> findAllByAtivoTrue(Pageable paginacao);
 
     @Query("""
@@ -23,7 +22,7 @@ public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, L
                 i.especialidade = :especialidade
                 and
                 i.id not in(
-                    select a.instrutor.id from Instrucao a
+                    select a.instrutor from Instrucao a
                     where
                     a.data = :data
                     )

@@ -11,8 +11,11 @@ import java.time.LocalDateTime;
 
 @Component
 public class ValidadorLimiteDiarioAluno implements ValidadorAgendamento {
-    @Autowired
     private InstrucaoRepository instrucaoRepository;
+
+    public ValidadorLimiteDiarioAluno(InstrucaoRepository instrucaoRepository) {
+        this.instrucaoRepository = instrucaoRepository;
+    }
 
     @Override
     public void validar(DadosAgendamento dados) {

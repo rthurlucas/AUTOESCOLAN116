@@ -1,6 +1,7 @@
 package br.com.senain116.autoescolan116.adapter.out.repository.entity;
 
 import br.com.senain116.autoescolan116.application.core.domain.enums.Perfil;
+import br.com.senain116.autoescolan116.application.core.domain.model.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Entity(name = "Usuario")
 @Table(name = "usuarios")
@@ -64,5 +66,8 @@ public class UsuarioEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+    public Optional<Usuario> map(Object toDomain) {
+        return Optional.empty();
     }
 }

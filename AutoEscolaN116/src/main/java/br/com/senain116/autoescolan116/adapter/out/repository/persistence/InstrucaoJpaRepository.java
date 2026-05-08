@@ -7,6 +7,5 @@ import java.time.LocalDateTime;
 
 public interface InstrucaoJpaRepository extends JpaRepository<InstrucaoEntity, Long> {
     boolean existsByAlunoIdAndDataBetween(Long id, LocalDateTime inicio, LocalDateTime fim);
-
     boolean existsByInstrutorIdAndData(Long id, LocalDateTime data);
 }

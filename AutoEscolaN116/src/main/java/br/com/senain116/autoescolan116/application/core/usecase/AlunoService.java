@@ -5,9 +5,10 @@ import br.com.senain116.autoescolan116.adapter.in.controller.mapper.EnderecoMapp
 import br.com.senain116.autoescolan116.adapter.in.controller.request.aluno.DadosAtualizacaoAluno;
 import br.com.senain116.autoescolan116.adapter.in.controller.request.aluno.DadosCadastroAluno;
 import br.com.senain116.autoescolan116.adapter.in.controller.response.aluno.DadosDetalhamentoAluno;
+import br.com.senain116.autoescolan116.adapter.out.repository.persistence.AlunoJpaRepository;
 import br.com.senain116.autoescolan116.application.core.domain.model.Aluno;
-import br.com.senain116.autoescolan116.exception.type.aluno.AlunoNotFoundException;
 import br.com.senain116.autoescolan116.application.port.out.AlunoRepository;
+import br.com.senain116.autoescolan116.exception.type.aluno.AlunoNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

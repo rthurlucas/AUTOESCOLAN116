@@ -47,7 +47,7 @@ public class AgendaDeInstrucoes {
         if (!alunoRepository.existsByIdAndAtivoTrue(dados.idAluno())) {
             throw new AlunoNotFoundException("ID do aluno informado não existe!");
         }
-        if (dados.idInstrutor() != null && !instrutorRepository.existsById(dados.idInstrutor())) {
+        if (dados.idInstrutor() != null && !instrutorRepository.existsByIdAndAtivoTrue(dados.idInstrutor())) {
             throw new InstrutorNotFoundException("ID do instrutor informado não existe!");
         }
 

@@ -77,7 +77,7 @@ public class Usuario implements UserDetails {
     }
 
     public boolean isAtivo() {
-        return ativo;
+        return this.ativo = ativo;
     }
 
     public Perfil getPerfil() {

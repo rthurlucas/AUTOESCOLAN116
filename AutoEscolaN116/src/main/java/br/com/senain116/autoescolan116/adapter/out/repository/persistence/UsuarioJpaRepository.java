@@ -1,13 +1,17 @@
-package br.com.senain116.autoescolan116.adapter.out.repository.persistence;
+    package br.com.senain116.autoescolan116.adapter.out.repository.persistence;
 
-import br.com.senain116.autoescolan116.application.core.domain.model.Usuario;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
+    import br.com.senain116.autoescolan116.adapter.out.repository.entity.UsuarioEntity;
+    import br.com.senain116.autoescolan116.application.core.domain.model.Usuario;
+    import jakarta.validation.constraints.NotNull;
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
+    import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioJpaRepository extends JpaRepository<Usuario, Long> {
-    UserDetails findByLogin(String username);
+    import java.util.Optional;
 
-    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
-}
+    public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long> {
+        Optional<UsuarioEntity> findByLogin(String username);
+        Page<UsuarioEntity> findAllByAtivoTrue(Pageable paginacao);
+        boolean existsByIdAndAtivoTrue(Long id);
+        Optional<UsuarioEntity> findById(Long id);
+    }

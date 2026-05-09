@@ -20,4 +20,6 @@ public interface UsuarioRepository {
     Optional<Usuario> findById(Long id);
 
     Usuario getReferenceById(@NotNull Long id);
+
+    void delete(Usuario usuario);
 }

@@ -56,4 +56,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         UsuarioEntity entity = jpaRepository.getReferenceById(id);
         return entityMapper.toDomain(entity);
     }
+
+    @Override
+    public void delete(Usuario usuario) {
+        UsuarioEntity entity = entityMapper.toEntity(usuario);
+        jpaRepository.delete(entity);
+    }
 }

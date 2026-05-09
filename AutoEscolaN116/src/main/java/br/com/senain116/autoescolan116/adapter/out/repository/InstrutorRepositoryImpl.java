@@ -6,6 +6,7 @@ import br.com.senain116.autoescolan116.adapter.out.repository.persistence.Instru
 import br.com.senain116.autoescolan116.application.core.domain.enums.Especialidade;
 import br.com.senain116.autoescolan116.application.core.domain.model.Instrutor;
 import br.com.senain116.autoescolan116.application.port.out.InstrutorRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +25,8 @@ public class InstrutorRepositoryImpl implements InstrutorRepository {
     }
 
     @Override
-    public Stream findAllByAtivoTrue(Pageable paginacao) {
-        return jpaRepository
-
-                .findAllByAtivoTrue(paginacao)
-                .stream()
-                .filter(instrutor -> instrutor.isAtivo())
+    public Page<Instrutor> findAllByAtivoTrue(Pageable paginacao) {
+        return jpaRepository.findAllByAtivoTrue(paginacao)
                 .map(entityMapper::toDomain);
     }
 
@@ -59,7 +56,7 @@ public class InstrutorRepositoryImpl implements InstrutorRepository {
 
     @Override
     public boolean existsByIdAndAtivoTrue(Long id) {
-       return jpaRepository.existsByIdAndTrue(id);
+       return jpaRepository.existsByIdAndAtivoTrue(id);
     }
 
     @Override

@@ -25,6 +25,7 @@ public class InstrutorService {
         this.enderecoMapper = enderecoMapper;
     }
 
+    @Transactional
     public DadosDetalhamentoInstrutor cadastrar(DadosCadastroInstrutor dados){
         Instrutor instrutor = mapper.toDomain(dados);
         Instrutor saved = repository.save(instrutor);
@@ -58,6 +59,7 @@ public class InstrutorService {
         return mapper.toDetailsDTO(saved);
    }
 
+   @Transactional
    public void excluir(Long id){
         Instrutor instrutor = repository.findById(id)
                 .orElseThrow(() -> new InstrutorNotFoundException("ID do instrutor nao encontrado: " + id));

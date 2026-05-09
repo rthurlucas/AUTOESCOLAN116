@@ -66,12 +66,14 @@ public class AgendaDeInstrucoes {
         return new DadosDetalhamentoAgendamento(saved);
     }
 
+    @Transactional
     public void excluirAgendamento(Long id){
         Instrucao agenda = repository.findById(id)
                 .orElseThrow(() -> new DadosIncompletosException("ID do agendamento não encontrado: " + id));
         repository.delete(agenda);
     }
 
+    @Transactional
     private Instrutor escolherInstrutor(DadosAgendamento dados) {
         if (dados.idInstrutor() != null) {
             return instrutorRepository.getReferenceById(dados.idInstrutor());

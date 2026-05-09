@@ -57,6 +57,7 @@ public class UsuarioService {
         return mapper.toDetailsDTO(usuario);
     }
 
+    @Transactional
     public DadosDetalhamentoUsuario atualizarUsuario(DadosAtualizacaoUsuario dados){
         Usuario usuario = repository.findById(dados.id()).orElseThrow(() -> new UsuarioNotFoundException("ID do usuario nao encontrado: " + dados.id()));
         usuario.atualizarUsuario(
@@ -68,6 +69,7 @@ public class UsuarioService {
         return new DadosDetalhamentoUsuario(usuario);
     }
 
+    @Transactional
     public void excluir(Long id){
         Usuario usuario = repository.findById(id).orElseThrow(() -> new UsuarioNotFoundException("ID do usuario nao encontrado: " + id));
         repository.delete(usuario);

@@ -10,7 +10,7 @@
     import java.util.Optional;
 
     public interface UsuarioJpaRepository extends JpaRepository<UsuarioEntity, Long> {
-        Optional<UsuarioEntity> findByLogin(String username);
+        Optional<UsuarioEntity> findByLogin(String login, String username);
         Page<UsuarioEntity> findAllByAtivoTrue(Pageable paginacao);
         boolean existsByIdAndAtivoTrue(Long id);
         Optional<UsuarioEntity> findById(Long id);

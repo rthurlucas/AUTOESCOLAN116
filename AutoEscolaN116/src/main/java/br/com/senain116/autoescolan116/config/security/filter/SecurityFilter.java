@@ -1,12 +1,13 @@
 package br.com.senain116.autoescolan116.config.security.filter;
 
+import br.com.senain116.autoescolan116.adapter.out.repository.entity.UsuarioEntity;
+import br.com.senain116.autoescolan116.adapter.out.repository.persistence.UsuarioJpaRepository;
 import br.com.senain116.autoescolan116.config.security.service.TokenService;
 import br.com.senain116.autoescolan116.application.port.out.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,14 +15,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
-    @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    private UsuarioRepository repository;
+    private UsuarioJpaRepository repository;
+
+    public SecurityFilter(TokenService tokenService, UsuarioJpaRepository repository){
+        this.tokenService = tokenService;
+        this.repository = repository;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -32,12 +37,12 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (tokenJWT != null) {
             String subject = tokenService.getSubject(tokenJWT);
-            UserDetails usuario = repository.findByLogin(subject);
+            Optional<UsuarioEntity> usuario = repository.findByLogin(subject);
             UsernamePasswordAuthenticationToken authentication
                     = new UsernamePasswordAuthenticationToken(
                     usuario,
                     null,
-                    usuario.getAuthorities()
+                    usuario.get().getAuthorities()
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

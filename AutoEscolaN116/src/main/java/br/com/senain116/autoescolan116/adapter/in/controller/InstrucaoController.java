@@ -44,7 +44,6 @@ public class InstrucaoController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN', 'USER')")
-    @Transactional
    public ResponseEntity<Void> excluirInstrucao(@PathVariable Long id){
        agenda.excluirAgendamento(id);
        return ResponseEntity.noContent().build();

@@ -51,32 +51,32 @@ public class InstrutorController implements ModelDomainController<
     }
 
     @GetMapping
-        @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-        public ResponseEntity<Page<DadosListagemInstrutor>> listar(
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Page<DadosListagemInstrutor>> listar(
             @PageableDefault(size = 10, sort = "nome") Pageable paginacao) {
         return ResponseEntity.ok(service.listar(paginacao));
     }
 
-        @GetMapping("/{id}")
-        @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-        public ResponseEntity<DadosDetalhamentoInstrutor> detalhar(
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<DadosDetalhamentoInstrutor> detalhar(
             @PathVariable Long id) {
         Instrutor instrutor = repository.getReferenceById(id);
         return ResponseEntity.ok(service.detalhar(id));
     }
 
-        @PutMapping
-        @Transactional
-        @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PutMapping
+    @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
         public ResponseEntity<DadosDetalhamentoInstrutor> atualizar(
             @RequestBody @Valid DadosAtualizacaoInstrutor dados) {
         return ResponseEntity.ok(service.atualizar(dados));
     }
 
-        @DeleteMapping("/{id}")
-        @Transactional
-        @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-        public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) {
         service.excluir(id);
         return ResponseEntity.noContent().build();
     }

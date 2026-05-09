@@ -39,5 +39,5 @@ public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, L
             """)
     boolean isActiveById(Long id);
 
-    boolean existsByIdAndTrue(Long id);
+    boolean existsByIdAndAtivoTrue(Long id);
 }

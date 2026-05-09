@@ -40,12 +40,12 @@ public class UsuarioEntity implements UserDetails {
 
     @Override
     public @Nullable String getPassword() {
-        return "";
+        return senha;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return login;
     }
 
     @Override
@@ -66,8 +66,5 @@ public class UsuarioEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-    }
-    public Optional<Usuario> map(Object toDomain) {
-        return Optional.empty();
     }
 }

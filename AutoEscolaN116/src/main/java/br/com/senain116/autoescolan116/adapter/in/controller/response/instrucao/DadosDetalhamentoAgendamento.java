@@ -17,8 +17,8 @@ public record DadosDetalhamentoAgendamento(
     public DadosDetalhamentoAgendamento(Instrucao instrucao) {
         this(
                 instrucao.getId(),
-                instrucao.getAluno().getNome(),
-                instrucao.getInstrutor().getNome(),
+                instrucao.getAluno().getId(),
+                instrucao.getInstrutor().getId(),
                 instrucao.getInstrutor().getEspecialidade(),
                 instrucao.getData()
         );

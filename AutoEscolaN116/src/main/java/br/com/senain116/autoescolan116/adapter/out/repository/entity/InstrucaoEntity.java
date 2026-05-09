@@ -23,10 +23,10 @@ public class InstrucaoEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aluno_id")
-    private Aluno aluno;
+    private AlunoEntity aluno;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "instrutor_id")
-    private Instrutor instrutor;
+    private InstrutorEntity instrutor;
     private LocalDateTime data;
 }

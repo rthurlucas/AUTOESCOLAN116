@@ -8,9 +8,11 @@ import br.com.senain116.autoescolan116.application.port.out.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@Component
 public class UsuarioRepositoryImpl implements UsuarioRepository {
     private final UsuarioJpaRepository jpaRepository;
     private final UsuarioEntityMapper entityMapper;
@@ -21,8 +23,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public UserDetails findByLogin(String username) {
-        return jpaRepository.findByLogin(username)
+    public UserDetails findByLogin(String login) {
+        return jpaRepository.findByLogin(login)
                 .map(entityMapper::toDomain)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }

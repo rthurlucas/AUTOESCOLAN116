@@ -7,10 +7,12 @@
     import br.com.senain116.autoescolan116.application.port.out.InstrucaoRepository;
     import org.springframework.data.domain.Page;
     import org.springframework.data.domain.Pageable;
+    import org.springframework.stereotype.Component;
 
     import java.time.LocalDateTime;
     import java.util.Optional;
 
+    @Component
     public class InstrucaoRepositoryImpl implements InstrucaoRepository {
         private final InstrucaoEntityMapper mapper;
         private final InstrucaoJpaRepository jpaRepository;

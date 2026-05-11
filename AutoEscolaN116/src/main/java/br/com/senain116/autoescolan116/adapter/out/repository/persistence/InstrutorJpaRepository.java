@@ -15,14 +15,14 @@ public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, L
     Page<InstrutorEntity> findAllByAtivoTrue(Pageable paginacao);
 
     @Query("""
-                select i from InstrutorEntity i
+                select i from Instrutor i
                 where
                 i.ativo = true
                 and
                 i.especialidade = :especialidade
                 and
                 i.id not in(
-                    select a.instrutorEntity from Instrucao a
+                    select a.instrutor.id from Instrucao a
                     where
                     a.data = :data
                     )
@@ -33,7 +33,7 @@ public interface InstrutorJpaRepository extends JpaRepository<InstrutorEntity, L
 
     @Query("""
                 select i.ativo
-                from InstrutorEntity i
+                from Instrutor i
                 where
                 i.id = :id
             """)
